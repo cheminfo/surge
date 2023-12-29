@@ -1,8 +1,8 @@
 version: "2.2"
 services:
   surge:
-    #build: ./docker
-    image: ghcr.io/cheminfo/surge-docker:1.1.0
+    build: ./docker
+    #image: ghcr.io/cheminfo/surge-docker:1.1.0
     restart: always
     ulimits:
       core: 0
