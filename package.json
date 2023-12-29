@@ -1,0 +1,6 @@
+{
+  "name": "surge-docker",
+  "version": "1.0.0",
+  "description": "surge docker web service",
+  "private": true
+}
