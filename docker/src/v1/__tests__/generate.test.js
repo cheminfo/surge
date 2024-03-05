@@ -1,5 +1,3 @@
-import { Molecule } from 'openchemlib'
-
 import { doGenerate } from '../generate.js';
 
 describe('generate', () => {
@@ -29,6 +27,6 @@ describe('generate', () => {
     expect(result.found).toBe(10);
     expect(result.result).toHaveLength(2);
     expect(result.mf).toBe('C5H10');
-    expect(result.result[0]).toBeDefined()
+    expect(result.result[0]).toBeDefined();
   });
 });

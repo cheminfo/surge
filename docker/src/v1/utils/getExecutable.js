@@ -1,6 +1,5 @@
 import { existsSync } from 'fs';
 
-
 export function getExecutable() {
   let executableName;
   switch (process.platform) {
@@ -15,7 +14,7 @@ export function getExecutable() {
       executableName = 'surge-linux-v1.0';
       break;
     default:
-      throw new Error('Unsupported platform')
+      throw new Error('Unsupported platform');
   }
 
   const executable = new URL(`../../../bin/${executableName}`, import.meta.url);

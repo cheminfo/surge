@@ -47,17 +47,20 @@ export default function generate(fastify) {
             default: false,
           },
           limit3Rings: {
-            description: 'Limit number of rings of length 3 in the format max or min:max',
+            description:
+              'Limit number of rings of length 3 in the format max or min:max',
             type: 'string',
             default: '',
           },
           limit4Rings: {
-            description: 'Limit number of rings of length 4 in the format max or min:max',
+            description:
+              'Limit number of rings of length 4 in the format max or min:max',
             type: 'string',
             default: '',
           },
           limit5Rings: {
-            description: 'Limit number of rings of length 5 in the format max or min:max',
+            description:
+              'Limit number of rings of length 5 in the format max or min:max',
             type: 'string',
             default: '',
           },
@@ -67,19 +70,22 @@ export default function generate(fastify) {
             default: false,
           },
           bredsRuleOne: {
-            description: 'Bredt\'s rule for two rings ij with one bond in common (33, 34, 35, 36, 44, 45)',
+            description:
+              "Bredt's rule for two rings ij with one bond in common (33, 34, 35, 36, 44, 45)",
             type: 'boolean',
             default: false,
           },
           bredsRuleTwo: {
-            description: 'Bredt\'s rule for two rings ij with two bonds in common (i,j up to 56)',
+            description:
+              "Bredt's rule for two rings ij with two bonds in common (i,j up to 56)",
             type: 'boolean',
             default: false,
           },
           bredsRuleThree: {
-            description: 'Bredt\'s rule for two rings of length 6 sharing three bonds',
+            description:
+              "Bredt's rule for two rings of length 6 sharing three bonds",
             type: 'boolean',
-            default: false
+            default: false,
           },
           noK33K24: {
             description: 'no K_33 or K_24 structure',
@@ -136,9 +142,9 @@ export async function doGenerate(request, response) {
 
     const filters = [];
     if (params.noSmallRingsTripleBonds) filters.push(1);
-    if (params.bredsRuleOne) filters.push(2)
-    if (params.bredsRuleTwo) filters.push(3)
-    if (params.bredsRuleThree) filters.push(4)
+    if (params.bredsRuleOne) filters.push(2);
+    if (params.bredsRuleTwo) filters.push(3);
+    if (params.bredsRuleThree) filters.push(4);
     if (params.noAllene) filters.push(5);
     if (params.noAlleneInSmallRings) filters.push(6);
     if (params.noK33K24) filters.push(7);
@@ -147,10 +153,8 @@ export async function doGenerate(request, response) {
 
     if (filters.length) flags.push(`-B${filters.join(',')}`); // filters
 
-
     // flags.push('-oFILE'); // smiles
     // flags.push('-u'); // only count
-
 
     /*
      -B#,...,# Specify sets of substructures to avoid (details in manual)
@@ -170,7 +174,6 @@ export async function doGenerate(request, response) {
 
     flags.push(params.mf);
 
-    console.log(flags)
     const info = {};
     const start = Date.now();
     const exeResult = spawnSync(EXECUTABLE, flags, {
@@ -180,9 +183,8 @@ export async function doGenerate(request, response) {
     });
     info.time = Date.now() - start;
 
-
-    const smiles = exeResult.stdout.split('\n').filter(entry => entry)
-    const stderr = exeResult.stderr
+    const smiles = exeResult.stdout.split('\n').filter((entry) => entry);
+    const stderr = exeResult.stderr;
 
     info.log = stderr;
 
@@ -222,7 +224,7 @@ function enhancedSmiles(smiles, params, info) {
   }
   // apparently this library can return twice the same molecule we check ourself
   const uniqueSmiles = {};
-  const uniqueIDCodes = {}
+  const uniqueIDCodes = {};
   for (const line of smiles.slice(0, limit)) {
     if (uniqueSmiles[line]) continue;
     uniqueSmiles[line] = true;

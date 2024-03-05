@@ -26,8 +26,7 @@ fastify.get('/', (_, reply) => {
 await fastify.register(fastifySwagger, {
   swagger: {
     info: {
-      title:
-        'Generate structural isomers from a molecular formula using Surge',
+      title: 'Generate structural isomers from a molecular formula using Surge',
       description: ``,
       version: '1.0.0',
     },
@@ -49,7 +48,7 @@ await fastify.ready();
 fastify.swagger();
 
 // eslint-disable-next-line no-console
-console.log('http://localhost:31228')
+console.log('http://localhost:31228');
 fastify.listen({ port: 31228, host: '0.0.0.0' }, (err) => {
   if (err) {
     fastify.log.error(err);
