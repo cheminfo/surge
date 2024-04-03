@@ -137,8 +137,8 @@ export async function doGenerate(request, response) {
     if (params.disallowTripleBonds) flags.push('-T'); // disallow triple bond
     if (params.requirePlanarity) flags.push('-P'); // Require planarity
     if (params.limit3Rings !== undefined && params.limit3Rings !== "") flags.push(`-t${params.limit3Rings}`); // Limit number of rings of length 3
-    if (params.limit4Rings !== undefined && params.limit4Rings !== "") flags.push(`-p${params.limit4Rings}`); // Limit number of rings of length 4
-    if (params.limit5Rings !== undefined && params.limit5Rings !== "") flags.push(`-f${params.limit5Rings}`); // Limit number of rings of length 5
+    if (params.limit4Rings !== undefined && params.limit4Rings !== "") flags.push(`-f${params.limit4Rings}`); // Limit number of rings of length 4
+    if (params.limit5Rings !== undefined && params.limit5Rings !== "") flags.push(`-p${params.limit5Rings}`); // Limit number of rings of length 5
 
     const filters = [];
     if (params.noSmallRingsTripleBonds) filters.push(1);
