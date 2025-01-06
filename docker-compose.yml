@@ -10,5 +10,15 @@ services:
       driver: "json-file"
       options:
         max-size: "50m"
-    ports:
-      - 127.0.0.1:31228:31228
+    networks:
+      - traefik
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.surge.rule=Host(`surge.cheminfo.org`)'
+      - 'traefik.http.routers.surge.entrypoints=websecure'
+      - 'traefik.http.routers.surge.tls.certresolver=letsencrypt'
+
+
+networks:
+  traefik:
+    external: true
