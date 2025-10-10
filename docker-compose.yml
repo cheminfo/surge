@@ -1,15 +1,15 @@
-version: "2.2"
+version: '2.2'
 services:
   surge:
     build: ./docker
     #image: ghcr.io/cheminfo/surge-docker:1.1.0
-    restart: always
+    restart: unless-stopped
     ulimits:
       core: 0
     logging:
-      driver: "json-file"
+      driver: 'json-file'
       options:
-        max-size: "50m"
+        max-size: '50m'
     networks:
       - traefik
     labels:
@@ -17,7 +17,6 @@ services:
       - 'traefik.http.routers.surge.rule=Host(`surge.cheminfo.org`)'
       - 'traefik.http.routers.surge.entrypoints=websecure'
       - 'traefik.http.routers.surge.tls.certresolver=letsencrypt'
-
 
 networks:
   traefik:
