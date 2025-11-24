@@ -1,11 +1,13 @@
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
 import fastifySensible from '@fastify/sensible';
+import fastifyStatic from '@fastify/static';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyPkg from 'fastify';
 
 import v1 from './v1/v1.js';
+import { join } from 'path';
 
 const fastify = fastifyPkg({
   logger: false,
@@ -19,8 +21,9 @@ fastify.register(fastifyMultipart);
 
 fastify.register(fastifySensible);
 
-fastify.get('/', (_, reply) => {
-  reply.redirect('/documentation');
+fastify.register(fastifyStatic, {
+  root: join(import.meta.dirname, 'static'),
+  prefix: '/', // optional: default '/'
 });
 
 await fastify.register(fastifySwagger, {
