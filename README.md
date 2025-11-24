@@ -1,4 +1,4 @@
-# surge-docker
+# surge
 
 Webservice allowing to convert between molecule formats using surge
 
