@@ -1,4 +1,3 @@
-version: '2.2'
 services:
   surge:
     image: ghcr.io/cheminfo/surge:latest
