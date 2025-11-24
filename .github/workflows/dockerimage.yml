@@ -29,6 +29,7 @@ jobs:
           ref: ${{ github.event.inputs.ref }}
 
       - name: Build image
+        working-directory: docker
         run: docker build . --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
