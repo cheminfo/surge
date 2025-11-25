@@ -1,11 +1,9 @@
 import { spawnSync } from 'node:child_process';
 
 import { MF } from 'mf-parser';
-import OCL from 'openchemlib/core.js';
+import { Molecule, SSSearcher } from 'openchemlib';
 
 import { getExecutable } from './utils/getExecutable.js';
-
-const { Molecule } = OCL;
 
 const EXECUTABLE = getExecutable();
 
@@ -132,8 +130,8 @@ export async function doGenerate(request, response) {
   const params = request.body || request.query;
   try {
     params.mf = new MF(params.mf).getInfo().mf.replaceAll(/[^A-Za-z0-9]/g, '');
-    let flags = [];
-    flags.push('-S'); // retrieve smiles rather than molfiles
+    let flags = ['-S'];
+    // retrieve smiles rather than molfiles
     if (params.disallowTripleBonds) flags.push('-T'); // disallow triple bond
     if (params.requirePlanarity) flags.push('-P'); // Require planarity
     if (params.limit3Rings !== undefined && params.limit3Rings !== '') {
@@ -216,7 +214,7 @@ function enhancedSmiles(smiles, params, info) {
   let fragment = null;
   if (fragmentCode) {
     fragment = Molecule.fromIDCode(fragmentCode);
-    searcher = new OCL.SSSearcher();
+    searcher = new SSSearcher();
     searcher.setFragment(fragment);
   }
   const results = {
@@ -234,8 +232,7 @@ function enhancedSmiles(smiles, params, info) {
   for (const line of smiles.slice(0, limit)) {
     if (uniqueSmiles[line]) continue;
     uniqueSmiles[line] = true;
-    const entry = {};
-    entry.smiles = line;
+    const entry = { smiles: line };
     if (idCode || fragment) {
       const molecule = Molecule.fromSmiles(line);
       if (searcher) {

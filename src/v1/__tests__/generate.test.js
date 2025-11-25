@@ -1,4 +1,4 @@
-import { expect, it, describe } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { doGenerate } from '../generate.js';
 
@@ -11,6 +11,7 @@ describe('generate', () => {
       },
     };
     await doGenerate({ body: { mf: 'C5H10' } }, response);
+
     expect(result.found).toBe(10);
     expect(result.mf).toBe('C5H10');
     expect(result.result[0]).toStrictEqual({
@@ -26,6 +27,7 @@ describe('generate', () => {
       },
     };
     await doGenerate({ body: { mf: 'C5H10', limit: 2 } }, response);
+
     expect(result.found).toBe(10);
     expect(result.result).toHaveLength(2);
     expect(result.mf).toBe('C5H10');

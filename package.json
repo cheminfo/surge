@@ -27,23 +27,22 @@
   "homepage": "https://github.com/cheminfo/surge#readme",
   "devDependencies": {
     "@types/node": "^24.10.1",
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^4.0.14",
     "c8": "^10.1.3",
-    "eslint": "^9.17.0",
-    "eslint-config-cheminfo": "^13.0.0",
-    "nodemon": "^3.1.9",
-    "prettier": "^3.4.2",
-    "vitest": "^2.1.8"
+    "eslint": "^9.39.1",
+    "eslint-config-cheminfo": "^17.0.0",
+    "prettier": "^3.6.2",
+    "vitest": "^4.0.14"
   },
   "dependencies": {
-    "@fastify/cors": "^10.0.2",
-    "@fastify/multipart": "^9.0.1",
-    "@fastify/sensible": "^6.0.2",
-    "@fastify/static": "^8.0.3",
-    "@fastify/swagger": "^9.4.0",
-    "@fastify/swagger-ui": "^5.2.0",
-    "fastify": "^5.2.1",
-    "mf-parser": "^3.3.0",
-    "openchemlib": "^8.17.0"
+    "@fastify/cors": "^11.1.0",
+    "@fastify/multipart": "^9.3.0",
+    "@fastify/sensible": "^6.0.3",
+    "@fastify/static": "^8.3.0",
+    "@fastify/swagger": "^9.6.1",
+    "@fastify/swagger-ui": "^5.2.3",
+    "fastify": "^5.6.2",
+    "mf-parser": "^3.6.0",
+    "openchemlib": "^9.18.2"
   }
 }
