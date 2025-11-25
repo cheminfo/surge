@@ -1,4 +1,4 @@
-import { spawnSync } from 'child_process';
+import { spawnSync } from 'node:child_process';
 
 import { MF } from 'mf-parser';
 import OCL from 'openchemlib/core.js';
@@ -131,14 +131,20 @@ export default function generate(fastify) {
 export async function doGenerate(request, response) {
   const params = request.body || request.query;
   try {
-    params.mf = new MF(params.mf).getInfo().mf.replace(/[^A-Za-z0-9]/g, '');
+    params.mf = new MF(params.mf).getInfo().mf.replaceAll(/[^A-Za-z0-9]/g, '');
     let flags = [];
     flags.push('-S'); // retrieve smiles rather than molfiles
     if (params.disallowTripleBonds) flags.push('-T'); // disallow triple bond
     if (params.requirePlanarity) flags.push('-P'); // Require planarity
-    if (params.limit3Rings !== undefined && params.limit3Rings !== "") flags.push(`-t${params.limit3Rings}`); // Limit number of rings of length 3
-    if (params.limit4Rings !== undefined && params.limit4Rings !== "") flags.push(`-f${params.limit4Rings}`); // Limit number of rings of length 4
-    if (params.limit5Rings !== undefined && params.limit5Rings !== "") flags.push(`-p${params.limit5Rings}`); // Limit number of rings of length 5
+    if (params.limit3Rings !== undefined && params.limit3Rings !== '') {
+      flags.push(`-t${params.limit3Rings}`);
+    } // Limit number of rings of length 3
+    if (params.limit4Rings !== undefined && params.limit4Rings !== '') {
+      flags.push(`-f${params.limit4Rings}`);
+    } // Limit number of rings of length 4
+    if (params.limit5Rings !== undefined && params.limit5Rings !== '') {
+      flags.push(`-p${params.limit5Rings}`);
+    } // Limit number of rings of length 5
 
     const filters = [];
     if (params.noSmallRingsTripleBonds) filters.push(1);
@@ -151,7 +157,7 @@ export async function doGenerate(request, response) {
     if (params.noCone) filters.push(8);
     if (params.noSmallRingsCommonAtoms) filters.push(9);
 
-    if (filters.length) flags.push(`-B${filters.join(',')}`); // filters
+    if (filters.length > 0) flags.push(`-B${filters.join(',')}`); // filters
 
     // flags.push('-oFILE'); // smiles
     // flags.push('-u'); // only count
@@ -177,13 +183,13 @@ export async function doGenerate(request, response) {
     const info = {};
     const start = Date.now();
     const exeResult = spawnSync(EXECUTABLE, flags, {
-      encoding: 'utf-8',
+      encoding: 'utf8',
       maxBuffer: 1024 * 1024 * 512, // default is 1024 * 1024 and max string is 512Mb
       timeout: Math.max(Math.min((params.timeout || 2) * 1000, 30000), 2000),
     });
     info.time = Date.now() - start;
 
-    const smiles = exeResult.stdout.split('\n').filter((entry) => entry);
+    const smiles = exeResult.stdout.split('\n').filter(Boolean);
     const stderr = exeResult.stderr;
 
     info.log = stderr;
@@ -195,11 +201,11 @@ export async function doGenerate(request, response) {
     }
     const result = enhancedSmiles(smiles, params, info);
     response.send(result);
-  } catch (e) {
+  } catch (error) {
     response.send({
       result: [],
-      log: e.toString(),
-      status: `error: ${e.toString()}`,
+      log: error.toString(),
+      status: `error: ${error.toString()}`,
     });
   }
 }

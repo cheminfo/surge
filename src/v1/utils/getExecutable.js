@@ -1,4 +1,5 @@
-import { existsSync } from 'fs';
+import { existsSync } from 'node:fs';
+import process from 'node:process';
 
 export function getExecutable() {
   let executableName;

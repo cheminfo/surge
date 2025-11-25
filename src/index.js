@@ -1,3 +1,5 @@
+import { join } from 'node:path';
+
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
 import fastifySensible from '@fastify/sensible';
@@ -7,7 +9,6 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyPkg from 'fastify';
 
 import v1 from './v1/v1.js';
-import { join } from 'path';
 
 const fastify = fastifyPkg({
   logger: false,
@@ -55,6 +56,6 @@ console.log('http://localhost:31228');
 fastify.listen({ port: 31228, host: '0.0.0.0' }, (err) => {
   if (err) {
     fastify.log.error(err);
-    process.exit(1);
+    throw new Error('Server failed to start');
   }
 });
