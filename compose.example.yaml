@@ -1,0 +1,12 @@
+services:
+  surge:
+    image: ghcr.io/cheminfo/surge:latest
+    restart: unless-stopped
+    expose:
+      - 31228:31228
+    ulimits:
+      core: 0
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '50m'

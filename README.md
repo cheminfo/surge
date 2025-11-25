@@ -1,6 +1,10 @@
 # surge
 
-Webservice allowing to convert between molecule formats using surge
+[![test coverage](https://img.shields.io/codecov/c/github/cheminfo/surge-docker.svg)](https://codecov.io/gh/cheminfo/surge-docker)
+[![license](https://img.shields.io/npm/l/ml-spectra-processing.svg)](https://github.com/cheminfo/surge-docker/blob/main/LICENSE)
+[![DOI](https://www.zenodo.org/badge/)](https://www.zenodo.org/badge/latestdoi/)
+
+Webservice allowing to generate structural isomers using surge based on a molecular formula
 
 Surge source code is available at: https://github.com/StructureGenerator/surge
 

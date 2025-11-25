@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: 'Webservice allowing to generate structural isomers using surge based on a molecular formula'
+abstract: 'This project is generates a docker image that wraps the surge software (https://github.com/StructureGenerator/surge) to provide a web service allowing to generate structural isomers based on a molecular formula.'
+repository-artifact: https://cheminfo.github.io/surge-docker/
+repository-code: https://github.com/cheminfo/surge-docker
+authors:
+  - family-names: 'Patiny'
+    given-names: 'Luc'
+    affiliation: 'Ecole Polytechnique Fédérale de Lausanne (EPFL), Switzerland'
+    orcid: 'https://orcid.org/0000-0002-4943-2643'
+  - family-names: 'Zasso'
+    given-names: 'Michaël'
+    affiliation: 'Zakodium Sàrl, Switzerland'
+    orcid: 'https://orcid.org/0000-0001-5295-2159'
+license: MIT
+keywords:
+  - Structural isomers generation
+  - Molecular formula
+  - Web service
+doi:
