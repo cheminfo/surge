@@ -2,7 +2,6 @@
 
 [![test coverage](https://img.shields.io/codecov/c/github/cheminfo/surge-docker.svg)](https://codecov.io/gh/cheminfo/surge-docker)
 [![license](https://img.shields.io/npm/l/ml-spectra-processing.svg)](https://github.com/cheminfo/surge-docker/blob/main/LICENSE)
-[![DOI](https://www.zenodo.org/badge/)](https://www.zenodo.org/badge/latestdoi/)
 
 Webservice allowing to generate structural isomers using surge based on a molecular formula
 
@@ -27,13 +26,13 @@ For the browser you can test for example:
 ## Local developmwent
 
 ```
-cd docker
-docker build . -t surge
-docker run -it surge bash
+git clone https://github.com/cheminfo/surge
+npm i
+npm run dev
 ```
 
 ## License
 
 [MIT](./LICENSE)
 
-surge is subject to its own license.
+surge is subject to its own license: https://github.com/cheminfo/surge/blob/main/LICENSE
