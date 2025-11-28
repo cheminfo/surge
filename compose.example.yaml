@@ -15,10 +15,10 @@ services:
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=100m
-      - /node/tmp:rw,noexec,nosuid,size=50m
     mem_limit: 2G # max memory
     cpus: 2 # max 2 CPU cores
     logging:
       driver: 'json-file'
       options:
         max-size: '50m'
+        max-file: 3
