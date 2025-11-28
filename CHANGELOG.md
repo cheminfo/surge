@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/cheminfo/surge/compare/v1.0.0...v1.1.0) (2025-11-28)
+
+
+### Features
+
+* secure the Dockerfile and compose ([#3](https://github.com/cheminfo/surge/issues/3)) ([14d0c92](https://github.com/cheminfo/surge/commit/14d0c92b24bd5db7874894c1c47327c1b774e6d1))
+
+
+### Bug Fixes
+
+* improve documentation ([3e7a4d4](https://github.com/cheminfo/surge/commit/3e7a4d44a9aa7d6672ff5e19bd60e11a01f2954e))
+
 ## 1.0.0 (2025-11-24)
 
 
