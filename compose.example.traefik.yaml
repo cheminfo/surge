@@ -1,9 +1,20 @@
 services:
   surge:
     image: ghcr.io/cheminfo/surge:latest
-    restart: unless-stopped
+    ports:
+      - 127.0.0.1:31228:31228
     ulimits:
-      core: 0
+      core: 0 # We don't want core dump, we never analyse them anyway
+      nofile: 65536 # Max number of files that can be open
+      nproc: 10240 # Mas number of processes
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=100m
+      - /node/tmp:rw,noexec,nosuid,size=50m
     logging:
       driver: 'json-file'
       options:
