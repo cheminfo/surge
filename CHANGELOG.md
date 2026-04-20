@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/cheminfo/surge/compare/v1.1.0...v1.2.0) (2026-04-20)
+
+
+### Features
+
+* support env-driven PORT and Cloudflare Tunnel deployment ([408cfa5](https://github.com/cheminfo/surge/commit/408cfa567f9998cf5b489bc44ac86a3a10d8e161))
+
 ## [1.1.0](https://github.com/cheminfo/surge/compare/v1.0.0...v1.1.0) (2025-11-28)
 
 
