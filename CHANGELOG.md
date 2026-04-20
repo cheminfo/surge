@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/cheminfo/surge/compare/v1.2.0...v1.2.1) (2026-04-20)
+
+
+### Bug Fixes
+
+* pin @fastify/static to 9.1.0 to work around swagger-ui regression ([5a6cedc](https://github.com/cheminfo/surge/commit/5a6cedc5c7dd6693fba42f0a79b03606be72ca94))
+
 ## [1.2.0](https://github.com/cheminfo/surge/compare/v1.1.0...v1.2.0) (2026-04-20)
 
 

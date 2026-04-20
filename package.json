@@ -1,6 +1,6 @@
 {
   "name": "surge",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "surge web service",
   "private": true,
   "type": "module",
