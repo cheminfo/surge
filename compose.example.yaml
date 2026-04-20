@@ -2,7 +2,10 @@
 # Copy this file to compose.yaml and run: docker compose up -d
 services:
   surge:
+    # Use the released image by default. To build locally instead, run:
+    #   docker compose up -d --build
     image: ghcr.io/cheminfo/surge:latest
+    build: .
     restart: unless-stopped
     env_file: .env
     ports:

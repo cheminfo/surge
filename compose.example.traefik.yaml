@@ -1,7 +1,10 @@
 services:
   surge:
+    # Use the released image by default. To build locally instead, run:
+    #   docker compose up -d --build
     image: ghcr.io/cheminfo/surge:latest
-    init: true # allows to kill the process 
+    build: .
+    init: true # allows to kill the process
     read_only: true
     security_opt:
       - no-new-privileges:true

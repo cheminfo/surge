@@ -1,14 +1,18 @@
 # Cloudflare Tunnel deployment — no port published on the host.
 #
-# Cloudflare Zero Trust dashboard (https://one.dash.cloudflare.com):
-#   Networks → Tunnels → Create a tunnel (Cloudflared) → copy the token
-#   into .env as TUNNEL_TOKEN=... → Public Hostname tab → set
+# Cloudflare dashboard (https://dash.cloudflare.com):
+#   Networking → Tunnels → Create a tunnel → Cloudflared connector →
+#   copy the token into .env as TUNNEL_TOKEN=... → open the tunnel →
+#   Published applications tab → add application with
 #   Hostname = surge.lactame.com, Service = HTTP, URL = surge:31228.
 #
 # Copy this file to compose.yaml and run: docker compose up -d
 services:
   surge:
+    # Use the released image by default. To build locally instead, run:
+    #   docker compose up -d --build
     image: ghcr.io/cheminfo/surge:latest
+    build: .
     restart: unless-stopped
     env_file: .env
     # No ports: traffic reaches surge only through the cloudflared sidecar.
