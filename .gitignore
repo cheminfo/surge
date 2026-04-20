@@ -116,3 +116,9 @@ dist
 .DS_Store
 
 compose.yaml
+
+# Local environment file — copy from .env.example
+.env
+
+# Claude Code settings
+.claude

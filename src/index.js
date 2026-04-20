@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import process from 'node:process';
 
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
@@ -51,9 +52,11 @@ v1(fastify);
 await fastify.ready();
 fastify.swagger();
 
+const port = Number(process.env.PORT ?? 31228);
+
 // eslint-disable-next-line no-console
-console.log('http://localhost:31228');
-fastify.listen({ port: 31228, host: '0.0.0.0' }, (err) => {
+console.log(`http://localhost:${port}`);
+fastify.listen({ port, host: '0.0.0.0' }, (err) => {
   if (err) {
     fastify.log.error(err);
     throw new Error('Server failed to start');

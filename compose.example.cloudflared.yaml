@@ -1,0 +1,58 @@
+# Cloudflare Tunnel deployment — no port published on the host.
+#
+# Cloudflare Zero Trust dashboard (https://one.dash.cloudflare.com):
+#   Networks → Tunnels → Create a tunnel (Cloudflared) → copy the token
+#   into .env as TUNNEL_TOKEN=... → Public Hostname tab → set
+#   Hostname = surge.lactame.com, Service = HTTP, URL = surge:31228.
+#
+# Copy this file to compose.yaml and run: docker compose up -d
+services:
+  surge:
+    image: ghcr.io/cheminfo/surge:latest
+    restart: unless-stopped
+    env_file: .env
+    # No ports: traffic reaches surge only through the cloudflared sidecar.
+    init: true # allows to kill the process
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=100m
+    cap_drop:
+      - ALL
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '200m'
+        max-file: '3'
+    ulimits:
+      core: 0 # We don't want core dump, we never analyse them anyway
+      nofile: 256 # Max number of files that can be open
+      nproc: 32 # Max number of processes
+    mem_limit: '256m' # max memory
+    cpus: 2 # max 2 CPU cores
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    env_file: .env
+    command: tunnel --no-autoupdate run --token ${TUNNEL_TOKEN}
+    depends_on:
+      - surge
+    init: true # allows to kill the process
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '50m'
+        max-file: '3'
+    ulimits:
+      core: 0 # No core dumps
+      nofile: 1024 # Enough for many concurrent outbound connections
+      nproc: 64 # A handful of goroutine-backed threads is plenty
+    mem_limit: '128m' # max memory
+    cpus: 1 # max 1 CPU core

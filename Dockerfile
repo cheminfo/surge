@@ -1,5 +1,6 @@
 FROM node:24
 
+ENV PORT=31228
 EXPOSE 31228
 
 RUN apt-get update
