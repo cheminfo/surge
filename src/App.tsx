@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import {
   CiteButton,
   EcosystemButton,
+  NavLink,
   SiteFooter,
   SiteHeader,
   useCompactHeader,
@@ -12,12 +13,14 @@ import {
 import { fetchVersion } from './api/surge.ts';
 import ShareDialog from './components/share/ShareDialog.tsx';
 import { SURGE_WORKS } from './data/papers.ts';
+import About from './pages/about/AboutPage.tsx';
 import ExercisesPage from './pages/exercises/ExercisesPage.tsx';
 import FragmentsPage from './pages/fragments/FragmentsPage.tsx';
 import GeneratorPage from './pages/generator/GeneratorPage.tsx';
 import NewsPage from './pages/news/NewsPage.tsx';
 import { data } from './state/generator.ts';
 import { writeGeneratorAddress } from './state/generatorUrl.ts';
+import { PAGE_PATHS } from './state/pages.ts';
 import type { Page } from './state/router.ts';
 import { navigate, route } from './state/router.ts';
 import { isEmbedded } from './state/shareConfig.ts';
@@ -64,6 +67,7 @@ function CurrentPage(props: { page: Page }) {
   if (props.page === 'exercises') return <ExercisesPage />;
   if (props.page === 'fragments') return <FragmentsPage />;
   if (props.page === 'news') return <NewsPage />;
+  if (props.page === 'about') return <About />;
   return <GeneratorPage />;
 }
 
@@ -86,6 +90,15 @@ function Header(props: { page: Page }) {
         }))}
         actions={
           <>
+            <NavLink
+              item={{
+                id: 'about',
+                label: 'About',
+                href: withBase(PAGE_PATHS.about),
+                onSelect: () => navigate('about'),
+              }}
+              active={props.page === 'about'}
+            />
             <a
               className="nav-link"
               href="https://github.com/StructureGenerator/surge"

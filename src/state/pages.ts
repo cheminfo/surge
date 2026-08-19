@@ -1,4 +1,4 @@
-export type Page = 'generator' | 'exercises' | 'fragments' | 'news';
+export type Page = 'generator' | 'exercises' | 'fragments' | 'news' | 'about';
 
 /** Where each page lives, the generator being the root. */
 export const PAGE_PATHS: Record<Page, string> = {
@@ -6,6 +6,7 @@ export const PAGE_PATHS: Record<Page, string> = {
   exercises: '/exercises',
   fragments: '/fragments',
   news: '/news',
+  about: '/about',
 };
 
 /**
@@ -22,5 +23,6 @@ export function readPageOf(pathname: string): Page {
   if (pathname.startsWith('/exercises')) return 'exercises';
   if (pathname.startsWith('/fragments')) return 'fragments';
   if (pathname.startsWith('/news')) return 'news';
+  if (pathname.startsWith('/about')) return 'about';
   return 'generator';
 }

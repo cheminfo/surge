@@ -123,4 +123,9 @@ const PAGES: Record<Page, PageShareOptions> = {
     features: [],
     hasExercises: false,
   },
+  about: {
+    title: 'About',
+    features: [],
+    hasExercises: false,
+  },
 };

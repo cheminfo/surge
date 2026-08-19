@@ -18,7 +18,7 @@ import type { RouteMeta } from 'react-cheminfo/core';
 import { PAGE_PATHS } from '../state/pages.ts';
 
 /**
- * The four pages of the site, the generator being the home page.
+ * The five pages of the site, the generator being the home page.
  *
  * A title is written for a search result and a `short` for a menu, so the
  * `noscript` index links each page under the name it is known by and says in a
@@ -56,5 +56,13 @@ export const PAGE_ROUTES: readonly RouteMeta[] = [
       'The releases of this site and of the Surge generator behind it: what each one added, and what it means for the structures you get back.',
     short: 'News',
     note: 'what changed in Surge',
+  },
+  {
+    path: PAGE_PATHS.about,
+    title: 'About this isomer generator',
+    description:
+      'What this tool is, the Surge generator it runs in your browser, what the enumeration leaves out, the works it is built on, and how to cite them.',
+    short: 'About',
+    note: 'what it is and how to cite it',
   },
 ];

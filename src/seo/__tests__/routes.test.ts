@@ -10,6 +10,7 @@ test('every page is an address of its own, the generator being the home page', (
     exercises: '/exercises',
     fragments: '/fragments',
     news: '/news',
+    about: '/about',
   });
 });
 
@@ -18,6 +19,7 @@ test('an address opens the page it names', () => {
   expect(readPageOf('/exercises')).toBe('exercises');
   expect(readPageOf('/fragments')).toBe('fragments');
   expect(readPageOf('/news')).toBe('news');
+  expect(readPageOf('/about')).toBe('about');
 });
 
 test('an address the site does not know opens the generator', () => {
@@ -28,14 +30,15 @@ test('an address the site does not know opens the generator', () => {
 test('every page is titled and described on its own', () => {
   const pages = PAGE_ROUTES;
 
-  expect(pages).toHaveLength(4);
-  expect(new Set(pages.map((page) => page.title)).size).toBe(4);
-  expect(new Set(pages.map((page) => page.description)).size).toBe(4);
+  expect(pages).toHaveLength(5);
+  expect(new Set(pages.map((page) => page.title)).size).toBe(5);
+  expect(new Set(pages.map((page) => page.description)).size).toBe(5);
   expect(pages.map((page) => page.path)).toStrictEqual([
     '/',
     '/exercises',
     '/fragments',
     '/news',
+    '/about',
   ]);
 
   for (const page of pages) {
