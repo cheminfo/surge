@@ -1,19 +1,10 @@
 /* The neutrals, the geometry, the type, the bar and the footer of the family. */
 @import 'react-cheminfo/styles/chrome.css';
 
+/* The two colours this site owns come from `<SiteTheme siteId="surge">`, which
+   the app root renders. */
 :root {
   --page-max: 1600px;
-
-  /* The two colours this site owns: the formula that goes in, and the
-     structures that come out. */
-  --brand: #4338ca;
-  --brand-alt: #e11d48;
-
-  /* The mark's rose reaches 4.1:1 on white — just under what text needs, so set
-     text in a darkened one (5.4:1) of the same hue. */
-  --brand-alt-text: #be123c;
-
-  --accent: var(--brand);
 
   color-scheme: light;
 }
@@ -179,7 +170,7 @@ a:hover {
 
 .export-extension {
   padding: 6px 8px;
-  color: #5f6b7c;
+  color: var(--text-muted);
   font-family: monospace;
   font-size: 12px;
 }
@@ -189,8 +180,8 @@ a:hover {
   padding: 8px 10px;
   max-height: 320px;
   overflow: auto;
-  background: #f6f7f9;
-  border: 1px solid #d3d8de;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 12px;
 }
@@ -230,7 +221,7 @@ a:hover {
 }
 
 .muted {
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 /* The canvas editor measures its container in pixels, so it is positioned out
@@ -238,7 +229,7 @@ a:hover {
 .structure-editor {
   position: relative;
   flex: 1;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
   background: #fff;
@@ -261,7 +252,7 @@ a:hover {
   flex-direction: column;
   margin: 0;
   padding: 4px;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
   background: #fff;
   align-items: center;
@@ -284,7 +275,7 @@ a:hover {
 
 .structure-cell figcaption {
   height: 14px;
-  color: #5f6b7c;
+  color: var(--text-muted);
   font-size: 11px;
   line-height: 14px;
 }
@@ -374,7 +365,7 @@ a:hover {
 }
 
 .exercise-row:hover {
-  background: #f6f7f9;
+  background: var(--surface-sunken);
 }
 
 .exercise-row--beginner {
@@ -400,13 +391,13 @@ a:hover {
 }
 
 .exercise-row-index {
-  color: #5f6b7c;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
 }
 
 .exercise-row-score {
   font-variant-numeric: tabular-nums;
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 .instructions-callout {
@@ -536,7 +527,7 @@ a:hover {
   display: flex;
   gap: 4px;
   background: #fff;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 2px;
 }
@@ -548,7 +539,7 @@ a:hover {
 .fragment-id,
 .fragment-codes code {
   font-size: 11px;
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 .fragment-usage {
@@ -568,7 +559,7 @@ a:hover {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: #5f6b7c;
+  color: var(--text-muted);
   margin-top: 6px;
 }
 
@@ -601,7 +592,7 @@ a:hover {
   flex: none;
   padding: 12px 16px;
   background: #fff;
-  border-bottom: 1px solid #d3d8de;
+  border-bottom: 1px solid var(--border);
 }
 
 .share-link-intro {
@@ -644,7 +635,7 @@ a:hover {
 .share-hint {
   display: block;
   font-size: 12px;
-  color: #5f6b7c;
+  color: var(--text-muted);
   margin-left: 26px;
 }
 
@@ -670,7 +661,7 @@ a:hover {
   padding: 6px 12px;
   max-height: 300px;
   overflow-y: auto;
-  border: 1px solid #d3d8de;
+  border: 1px solid var(--border);
   border-radius: 6px;
   background: #fff;
   display: grid;
@@ -717,7 +708,7 @@ a:hover {
 
 .share-set li:hover .share-set-grip,
 .share-set-grip:focus {
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 .share-set-item--dragged {
@@ -783,7 +774,7 @@ a:hover {
 .share-set-isomers {
   margin-left: auto;
   font-size: 12px;
-  color: #5f6b7c;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -810,7 +801,7 @@ a:hover {
   margin-left: auto;
   font-size: 12px;
   font-weight: 400;
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 .exercise-preview .structure-grid {
@@ -839,7 +830,7 @@ a:hover {
 .share-set-toolbar .share-set-count {
   margin-left: auto;
   font-size: 12px;
-  color: #5f6b7c;
+  color: var(--text-muted);
 }
 
 .share-set-add {
@@ -858,8 +849,8 @@ a:hover {
   flex: 1;
   margin: 0;
   padding: 8px 10px;
-  background: #f6f7f9;
-  border: 1px solid #d3d8de;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
   border-radius: 4px;
   font-size: 12px;
   white-space: pre-wrap;

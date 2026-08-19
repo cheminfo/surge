@@ -7,6 +7,7 @@ import {
   NavLink,
   SiteFooter,
   SiteHeader,
+  SiteTheme,
   useCompactHeader,
 } from 'react-cheminfo/ui';
 
@@ -54,6 +55,7 @@ export default function App() {
 
   return (
     <>
+      <SiteTheme siteId="surge" />
       {isEmbedded() ? null : <Header page={page} />}
       <div className="page">
         <CurrentPage page={page} />

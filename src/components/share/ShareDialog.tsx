@@ -196,11 +196,14 @@ function applyExercises(
 }
 
 function buildIframe(url: string, title: string): string {
+  // The frame's edge as it sits in the embedder's page, which cannot read our
+  // custom properties.
+  const border = '1px solid #d3d8de'; // tokens-ok
   return `<iframe
   src="${url.replaceAll('&', '&amp;')}"
   width="100%"
   height="800"
-  style="border: 1px solid #d3d8de; border-radius: 8px"
+  style="border: ${border}; border-radius: 8px"
   title="Surge — ${title}"
 ></iframe>`;
 }
