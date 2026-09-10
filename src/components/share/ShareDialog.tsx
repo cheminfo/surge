@@ -8,25 +8,22 @@ import {
 } from '@blueprintjs/core';
 import { useSignals } from '@preact/signals-react/runtime';
 import { useState } from 'react';
+import type { ShareConfig, ShareVocabulary } from 'react-cheminfo/core';
+import {
+  applyShareConfig,
+  buildEmbedCode,
+  isShareConfigured,
+  suggestedShareConfig,
+} from 'react-cheminfo/core';
+import { CodeBlock, CopyButton } from 'react-cheminfo/ui';
 
 import { FORMULAS_PARAM } from '../../state/exerciseSets.ts';
 import { data } from '../../state/exercises.ts';
 import { route } from '../../state/router.ts';
-import type { HideKey, ShareConfig } from '../../state/shareConfig.ts';
-import {
-  SHARE_PARAM_KEYS,
-  applyShareConfig,
-  isShareConfigured,
-  shareConfig,
-  stringifyParams,
-} from '../../state/shareConfig.ts';
-import {
-  defaultShareConfig,
-  shareOptionsOf,
-} from '../../state/shareOptions.ts';
+import type { HideKey } from '../../state/shareConfig.ts';
+import { shareConfig } from '../../state/shareConfig.ts';
+import { shareOptionsOf } from '../../state/shareOptions.ts';
 
-import CodeBlock from './CodeBlock.tsx';
-import CopyButton from './CopyButton.tsx';
 import ShareExerciseSet from './ShareExerciseSet.tsx';
 
 /**
@@ -46,9 +43,9 @@ export default function ShareDialog(props: {
   // course, without the parts that course has no use for. A page already
   // running a configuration shows that one instead of resetting it.
   const [draft, setDraft] = useState<ShareConfig>(() =>
-    isShareConfigured(shareConfig.value)
+    isShareConfigured(shareConfig.value, options.vocabulary)
       ? shareConfig.value
-      : defaultShareConfig(options),
+      : suggestedShareConfig(options.vocabulary),
   );
   // Until the teacher touches the list, the link hands out the whole set —
   // derived rather than copied at mount, so a set still loading when the
@@ -64,7 +61,16 @@ export default function ShareDialog(props: {
     });
   }
 
-  const url = buildUrl(draft, options.hasExercises ? selected : null);
+  const url = buildUrl(
+    draft,
+    options.vocabulary,
+    options.hasExercises ? selected : null,
+  );
+  const frame = buildEmbedCode({
+    url,
+    title: `Surge — ${options.title}`,
+    height: 800,
+  });
 
   return (
     <Dialog
@@ -82,17 +88,14 @@ export default function ShareDialog(props: {
         </p>
         <CodeBlock code={url} />
         <div className="share-link-actions">
-          <CopyButton code={url} text="Copy the link" />
+          <CopyButton content={url} label="Copy the link" />
           <Button
             icon="share"
             text="Open in a new tab"
             onClick={() => globalThis.open(url, '_blank', 'noopener')}
           />
           {/* The markup itself is never read: it is pasted. */}
-          <CopyButton
-            code={buildIframe(url, options.title)}
-            text="Copy the iframe"
-          />
+          <CopyButton content={frame} label="Copy the iframe" />
         </div>
       </div>
       <DialogBody>
@@ -114,19 +117,19 @@ export default function ShareDialog(props: {
           ) : null}
         </section>
 
-        {options.features.length > 0 ? (
+        {options.vocabulary.parts.length > 0 ? (
           <section className="share-section">
             <H6>Show on the page</H6>
-            {options.features.map((feature) => (
-              <div key={feature.key} className="share-feature">
+            {options.vocabulary.parts.map((part) => (
+              <div key={part.key} className="share-feature">
                 <Checkbox
-                  checked={!draft.hidden.includes(feature.key)}
-                  label={feature.label}
+                  checked={!draft.hidden.includes(part.key)}
+                  label={part.label}
                   onChange={(event) =>
-                    setHidden(feature.key, !event.currentTarget.checked)
+                    setHidden(part.key as HideKey, !event.currentTarget.checked)
                   }
                 />
-                <span className="share-hint">{feature.description}</span>
+                <span className="share-hint">{part.description}</span>
               </div>
             ))}
           </section>
@@ -152,16 +155,18 @@ export default function ShareDialog(props: {
  * The address of the page, with the configuration of the dialog written over
  * whatever the current one carries.
  * @param config - What the dialog holds.
+ * @param vocabulary - What this page's links can say.
  * @param formulas - The chosen exercises, or null on a page without a set.
  * @returns The absolute address.
  */
-function buildUrl(config: ShareConfig, formulas: readonly string[] | null) {
+function buildUrl(
+  config: ShareConfig,
+  vocabulary: ShareVocabulary,
+  formulas: readonly string[] | null,
+) {
   const params = new URLSearchParams(globalThis.location.search);
-  for (const key of SHARE_PARAM_KEYS) params.delete(key);
-  applyShareConfig(params, config);
   if (formulas) applyExercises(params, formulas);
-
-  const search = stringifyParams(params);
+  const search = applyShareConfig(params.toString(), config, vocabulary);
   const { origin, pathname } = globalThis.location;
   return `${origin}${pathname}${search ? `?${search}` : ''}`;
 }
@@ -193,17 +198,4 @@ function applyExercises(
   if (exercise && formulas.length > 0 && !formulas.includes(exercise)) {
     params.delete('exercise');
   }
-}
-
-function buildIframe(url: string, title: string): string {
-  // The frame's edge as it sits in the embedder's page, which cannot read our
-  // custom properties.
-  const border = '1px solid #d3d8de'; // tokens-ok
-  return `<iframe
-  src="${url.replaceAll('&', '&amp;')}"
-  width="100%"
-  height="800"
-  style="border: ${border}; border-radius: 8px"
-  title="Surge — ${title}"
-></iframe>`;
 }

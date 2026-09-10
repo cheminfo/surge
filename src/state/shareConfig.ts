@@ -1,91 +1,83 @@
 import { signal } from '@preact/signals-react';
+import type { ShareConfig, ShareVocabulary } from 'react-cheminfo/core';
+import {
+  EMBED_PARAM,
+  HIDE_PARAM,
+  isHidden as isPartHidden,
+  parseShareConfig,
+} from 'react-cheminfo/core';
 
-/** Every part of a page a shared link can switch off. */
-const HIDE_KEYS = [
-  'options',
-  'substructure',
-  'lists',
-  'about',
-  'list',
-  'hints',
-  'answers',
-  'clear',
-] as const;
+/**
+ * Every part of a page a shared link can switch off, with what switching it
+ * off does — written for the person building the link rather than for the
+ * visitor.
+ *
+ * This is the only place that knows those names. Components ask
+ * {@link isHidden} and never read the address themselves.
+ */
+export const SHARE_VOCABULARY = {
+  parts: [
+    {
+      key: 'options',
+      label: 'Options and restrictions',
+      description:
+        'The fold under the formula. Hiding it keeps the restrictions the link carries, so the visitor searches under the rules you set.',
+      hiddenByDefault: true,
+    },
+    {
+      key: 'substructure',
+      label: 'Substructure filter',
+      description:
+        'Drawing a fragment the isomers must contain. A fragment the link carries keeps filtering.',
+      hiddenByDefault: true,
+    },
+    {
+      key: 'lists',
+      label: 'Export the structures',
+      description:
+        'The button under the formula, handing out the results as SMILES, idCodes or an SDF.',
+      hiddenByDefault: true,
+    },
+    {
+      key: 'about',
+      label: 'About and citation',
+      description: 'What the generator does, and the paper to cite for surge.',
+    },
+    {
+      key: 'list',
+      label: 'The list of exercises',
+      description:
+        'The column on the left. Hide it for a frame that holds a single formula.',
+    },
+    {
+      key: 'hints',
+      label: 'Hints',
+      description: 'The hint ladder, revealed one rung at a time.',
+    },
+    {
+      key: 'answers',
+      label: 'Give up and see the answers',
+      description:
+        'The correction. Hiding it leaves finding the isomers as the only way through.',
+    },
+    {
+      key: 'clear',
+      label: 'Clear the answers',
+      description:
+        'The buttons that forget what was found, for one exercise and for all of them.',
+    },
+  ],
+} as const satisfies ShareVocabulary;
 
 /**
  * A part of a page a shared link switches off. A key a page does not know
  * about is simply ignored, so a link written for an older version of the site
  * still opens.
  */
-export type HideKey = (typeof HIDE_KEYS)[number];
-
-const KNOWN: ReadonlySet<string> = new Set(HIDE_KEYS);
+export type HideKey = (typeof SHARE_VOCABULARY)['parts'][number]['key'];
 
 /** Parameters that configure the page rather than feed the tool. */
-export const SHARE_PARAM_KEYS = ['embed', 'hide'] as const;
-
-export interface ShareConfig {
-  /** Drop the header, so only the activity shows through an iframe. */
-  embed: boolean;
-  /** Parts of the page the link switches off. */
-  hidden: readonly HideKey[];
-}
-
-/** An unconfigured link: the whole site, with everything shown. */
-export const DEFAULT_SHARE_CONFIG: ShareConfig = { embed: false, hidden: [] };
-
-/**
- * Read the share configuration out of a query string.
- * @param search - The query string, with or without its leading `?`.
- * @returns The configuration, falling back to {@link DEFAULT_SHARE_CONFIG} for
- * anything absent or unknown.
- */
-export function parseShareConfig(search: string): ShareConfig {
-  const params = new URLSearchParams(search);
-  return {
-    // A bare `?embed` counts: these addresses are retyped by hand.
-    embed: params.has('embed') && params.get('embed') !== '0',
-    hidden: parseHidden(params.get('hide')),
-  };
-}
-
-/**
- * Write a share configuration into a set of query parameters. What is left at
- * its default is deleted rather than written, so a plain link stays plain.
- * @param params - The parameters to update in place; the inputs of the page are left untouched.
- * @param config - The configuration to encode.
- */
-export function applyShareConfig(
-  params: URLSearchParams,
-  config: ShareConfig,
-): void {
-  if (config.embed) params.set('embed', '1');
-  else params.delete('embed');
-
-  if (config.hidden.length > 0) params.set('hide', config.hidden.join(','));
-  else params.delete('hide');
-}
-
-/**
- * Serialize query parameters, leaving the commas of `hide` and `formulas` alone:
- * they are legal in a query value and parse back identically, but
- * `URLSearchParams` escapes them to `%2C`, which makes a link a teacher has to
- * read or dictate needlessly cryptic.
- * @param params - The parameters to serialize.
- * @returns The query string, without its leading `?`.
- */
-export function stringifyParams(params: URLSearchParams): string {
-  return params.toString().replaceAll('%2C', ',');
-}
-
-/**
- * Whether a configuration differs from an unconfigured link.
- * @param config - The configuration to test.
- * @returns True when the link configures anything at all.
- */
-export function isShareConfigured(config: ShareConfig): boolean {
-  return config.embed || config.hidden.length > 0;
-}
+export const SHARE_PARAM_KEYS = [EMBED_PARAM, HIDE_PARAM] as const;
 
 /**
  * The configuration of the page currently open, read once from the address it
@@ -94,7 +86,7 @@ export function isShareConfigured(config: ShareConfig): boolean {
  * reload — or a link copied out of the frame — restores the same page.
  */
 export const shareConfig = signal<ShareConfig>(
-  parseShareConfig(globalThis.location?.search ?? ''),
+  parseShareConfig(globalThis.location?.search ?? '', SHARE_VOCABULARY),
 );
 
 /**
@@ -115,15 +107,5 @@ export function isEmbedded(): boolean {
  * @returns True when it must not be rendered.
  */
 export function isHidden(key: HideKey): boolean {
-  return shareConfig.value.hidden.includes(key);
-}
-
-function parseHidden(value: string | null): readonly HideKey[] {
-  if (!value) return [];
-  const hidden: HideKey[] = [];
-  for (const entry of value.split(',')) {
-    const key = entry.trim() as HideKey;
-    if (KNOWN.has(key) && !hidden.includes(key)) hidden.push(key);
-  }
-  return hidden;
+  return isPartHidden(shareConfig.value, key);
 }
